@@ -14,12 +14,25 @@ namespace StoreService
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
-        }
-
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
+            var configuration = new ConfigurationBuilder()
+                .AddCommandLine(args)
+                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
+
+            var hostBuilder = new WebHostBuilder()
+                .CaptureStartupErrors(true)
+                .UseSetting("detailedErrors", "true")
+                .UseKestrel()
+                .UseConfiguration(configuration)
+                .UseUrls("http://localhost:7001")
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
+                .UseStartup<Startup>();
+            using(var host = hostBuilder.Build())
+            {
+                host.Run();
+            }
+        }
     }
 }

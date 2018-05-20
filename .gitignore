@@ -15,7 +15,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-
+publish/
 *_i.c
 *_p.c
 *_i.h
@@ -64,3 +64,5 @@ bld/
 *.[Cc]ache
 # but keep track of directories ending in .cache
 !*.[Cc]ache/
+#Static
+wwwroot/
