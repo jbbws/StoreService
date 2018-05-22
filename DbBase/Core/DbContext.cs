@@ -25,7 +25,7 @@ namespace DbBase.Core
         {
             get
             {
-                return _db.GetCollection<BsonDocument>("Companies");
+                return _db.GetCollection<BsonDocument>("companies");
             }
         }
         public IMongoCollection<BsonDocument> Forms 

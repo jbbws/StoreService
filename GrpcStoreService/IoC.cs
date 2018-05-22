@@ -1,9 +1,9 @@
 using System;
 using GrpcBase;
 using Microsoft.Extensions.DependencyInjection;
-using GrpcStore.Grpc;
+using StoreService.Grpc;
 
-namespace GrpcStore.Grpc {
+namespace StoreService.Grpc {
     public static class IoC 
     {
         public static IServiceCollection AddGrpc(this IServiceCollection services, Uri grpcUrl)

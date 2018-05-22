@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using GrpcStore.Grpc;
+using StoreService.Grpc;
 using GrpcBase;
 using DbBase.Core;
 using DbBase.Ioc;
@@ -32,7 +32,7 @@ namespace StoreService
             services.Configure<Settings>(options=>
             {
                 options.ConnectionString ="mongodb://localhost"; //Configuration.GetSection("MongoConnection:MongoConnection").Value;
-                options.Database = "findocs";//Configuration.GetSection("MongoConnection:Database").Value;
+                options.Database = "store";//Configuration.GetSection("MongoConnection:Database").Value;
             });
             services.AddDbLayer();
             services.AddGrpc(Configuration.GetValue<Uri>(GrpcUrl));

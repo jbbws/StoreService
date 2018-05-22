@@ -7,29 +7,30 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.Extensions.Logging;
 using Grpc.Store.StoreService;
+using Grpc.Store.StoreService.Base;
 using static Grpc.Store.StoreService.StoreService;
-
-namespace GrpcStore.Grpc {
+using DbBase.Interfaces;
+using Google.Protobuf;
+namespace StoreService.Grpc {
     public class StoreGrpcService : StoreServiceBase, IGrpcServerService
     {
         protected readonly ILogger<StoreGrpcService> _logger;
-        public StoreGrpcService(ILogger<StoreGrpcService> logger)
+        protected readonly IDbRepository _repository;
+        public StoreGrpcService(ILogger<StoreGrpcService> logger,IDbRepository rep)
         {
             _logger = logger;
+            _repository = rep;
         }
         public ServerServiceDefinition ToServerServiceDefinition()
         {
             return BindService(this);
         }
 
-
-        // public async Task<GetKeyValuePairResponse> GetKeyValue(GetKeyValuePairRequest request, ServerCallContext context)
-        // {
-        //     return new GetKeyValuePairResponse() { Key = 14, Value = 88};
-        // }
-        public async Task<GetCompaniesResponse> GetCompanies(GetCompaniesRequest request){
-            
-            return new GetCompaniesResponse();
+        public override async Task<GetCompaniesResponse> GetCompanies(CompanySearch request,ServerCallContext context){
+            var response = new GetCompaniesResponse();
+            var result =  _repository.GetCompaniesList(request.Filter, request.Projection);
+            result.Result.ForEach(x =>response.Org.Add(new Company(){Id = x["code"].AsInt32, Name = x["name"].AsString}));
+            return response;
         }
     }
 }
